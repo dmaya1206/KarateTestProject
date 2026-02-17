@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+ext {
+    karateVersion = '1.4.1'
+}
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    //  testImplementation platform('org.junit:junit-bom:5.10.0')
+    //  testImplementation 'org.junit.jupiter:junit-jupiter'
+    //   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+
+    testImplementation "com.intuit.karate:karate-junit5:${karateVersion}"
+    // HTTP client Apache (opcional pero común si necesitas fine-tuning)
+    // testImplementation "com.intuit.karate:karate-apache:${karateVersion}"
+    testImplementation "net.masterthought:cucumber-reporting:5.8.0"
+
+
+
+}
+tasks.withType(JavaCompile){
+    options.encoding = "UTF-8"
+}
+
+sourceSets {
+    test {
+        resources {
+            srcDir file('src/test/java')
+            exclude '**/*.java'
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+
+//    testLogging {
+//        events "FAILED"                         // quita PASSED, SKIPPED, STD_OUT/ERR
+//        exceptionFormat "short"                 // o "full" si quieres pila completa al fallar
+//        showStandardStreams = false             // oculta System.out/err de los tests
+//    }
+
+
+// Fuerza a ejecutar siempre
+    outputs.upToDateWhen { false }
+
+    systemProperty "karate.options", System.getProperty("karate.options", "")
+    systemProperty "karate.env", System.getProperty("karate.env", "dev")
+
+//    systemProperty "karate.env" , System.properties.getProperty('karate.env')
+//    systemProperties = System.properties
+}

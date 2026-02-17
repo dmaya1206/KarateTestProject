@@ -1,0 +1,7 @@
+
+{
+  "name": "#",
+  "job": "#string",
+  "id": "#notnull",
+  "createdAt": "#notnull"
+}
